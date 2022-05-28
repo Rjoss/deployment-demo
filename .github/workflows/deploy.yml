@@ -11,6 +11,8 @@ on:
 
 env:
   COLOR: red
+  PATH_REPO: ./build/
+  PATH_SERVER: ./ci
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -39,7 +41,7 @@ jobs:
         run: echo ${{ secrets.VT_KNOWN_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
-        run: rsync -avz -e "ssh -p ${{ secrets.VT_PORT }}" ./build/ ${{ secrets.VT_USER }}@${{ secrets.VT_HOSTNAME }}:./ci
+        run: rsync -avz -e "ssh -p ${{ secrets.VT_PORT }}" ${{ PATH_REPO }} ${{ secrets.VT_USER }}@${{ secrets.VT_HOSTNAME }}:${{ PATH_SERVER }}
 
       - name: Closing Notes
         run: |
@@ -50,4 +52,4 @@ jobs:
           echo "GITHUB_RUN_ID:    $GITHUB_RUN_ID"
           echo "GITHUB_SHA:       $GITHUB_SHA"
           echo "COLOR:            $COLOR"
-          echo "NOW:              $(date +'%Y-%m-%dT%H:%M:%S')"
+          echo "NOW:              $(date +'%Y-%m-%d T%H:%M:%S %Z')"

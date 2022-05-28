@@ -40,6 +40,14 @@ jobs:
           echo "REACT_APP_GITHUB_NOW='$(date +'%Y-%m-%d T%H:%M:%S %Z')'" >> $PATH_ENV_PROD
           cat $PATH_ENV_PROD
 
+      - name: Use Node 16 LTS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.15.0
+
+      - run: npm install
+      - run: npm run build
+
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:

@@ -38,7 +38,7 @@ jobs:
         run: echo ${{ secrets.KNOWN_HOST_HAKFGCOA }} >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
-        run: rsync -avz -e "ssh -p ${{ secrets.PORT_HAKFGCOA }}" ./build/ ${{ secrets.USER_HAKFGCOA }}@${{ secrets.HOSTNAME_HAKFGCOA }}:/ci
+        run: rsync -avz -e "ssh -p ${{ secrets.PORT_HAKFGCOA }}" ./build/ ${{ secrets.USER_HAKFGCOA }}@${{ secrets.HOSTNAME_HAKFGCOA }}:/tmp/cli
 
       - name: Closing Notes
         run: echo Ran version 1.1

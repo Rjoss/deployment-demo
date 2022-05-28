@@ -28,7 +28,7 @@ jobs:
           known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
           
       - name: Adding Known Hosts
-        run: ${{ secrets.KNOWN_HOST_HAKFGCOA }} >> ~/.ssh/known_hosts   
+        run: cat ${{ secrets.KNOWN_HOST_HAKFGCOA }} >> ~/.ssh/known_hosts   
         
       - name: Deploy with rsync
         run: rsync --dry-run --verbose -avz -e "ssh -p ${{ secrets.PORT_HAKFGCOA }}" ./ ${{ secrets.USER_HAKFGCOA }}@${{ secrets.HOSTNAME_HAKFGCOA }}:/ci/  

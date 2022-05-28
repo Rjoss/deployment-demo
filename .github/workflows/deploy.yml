@@ -50,3 +50,4 @@ jobs:
           echo "GITHUB_RUN_ID:    $GITHUB_RUN_ID"
           echo "GITHUB_SHA:       $GITHUB_SHA"
           echo "COLOR:            $COLOR"
+          echo "NOW:              $(date +'%Y-%m-%dT%H:%M:%S')"

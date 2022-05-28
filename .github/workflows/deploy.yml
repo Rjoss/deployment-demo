@@ -20,6 +20,13 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - uses: actions/checkout@v2
+        with:
+          # The branch, tag or SHA to checkout. When checking out the repository that
+          # triggered a workflow, this defaults to the reference or SHA for that event.
+          # Otherwise, defaults to `master`.
+          ref: 'deployment'
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
@@ -28,12 +35,10 @@ jobs:
           known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
 
       - name: Adding Known Hosts
-        run: ${{ secrets.KNOWN_HOST_HAKFGCOA }} >> ~/.ssh/known_hosts
+        run: echo ${{ secrets.KNOWN_HOST_HAKFGCOA }} >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
-        run: rsync --dry-run --verbose -avz -e "ssh -p ${{ secrets.PORT_HAKFGCOA }}" ./build/ ${{ secrets.USER_HAKFGCOA }}@${{ secrets.HOSTNAME_HAKFGCOA }}:/ci/
+        run: rsync -avz -e "ssh -p ${{ secrets.PORT_HAKFGCOA }}" ./build/ ${{ secrets.USER_HAKFGCOA }}@${{ secrets.HOSTNAME_HAKFGCOA }}:./ci
 
       - name: Closing Notes
-        run: |
-          echo Steps Finished
-          echo ///
+        run: echo Ran version 1.1

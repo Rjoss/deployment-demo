@@ -10,9 +10,9 @@ on:
   workflow_dispatch:
 
 env:
-  COLOR: red
   PATH_REPO: ./build/
   PATH_SERVER: ./ci
+  PATH_ENV_PROD: ./.env.production
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -30,7 +30,16 @@ jobs:
           # Otherwise, defaults to `master`.
           ref: 'deployment'
 
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Reset and add envs
+        run: |
+          > $PATH_ENV_PROD
+          echo "REACT_APP_GITHUB_REF='$GITHUB_REF'"           >> $PATH_ENV_PROD
+          echo "REACT_APP_GITHUB_REF_NAME='$GITHUB_REF_NAME'" >> $PATH_ENV_PROD
+          echo "REACT_APP_GITHUB_RUN_ID='$GITHUB_RUN_ID'"     >> $PATH_ENV_PROD
+          echo "REACT_APP_GITHUB_SHA='$GITHUB_SHA'"           >> $PATH_ENV_PROD
+          echo "REACT_APP_GITHUB_NOW='$(date +'%Y-%m-%d T%H:%M:%S %Z')'" >> $PATH_ENV_PROD
+          cat $PATH_ENV_PROD
+
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -42,14 +51,3 @@ jobs:
 
       - name: Deploy with rsync
         run: rsync -avz -e "ssh -p ${{ secrets.VT_PORT }}" $PATH_REPO ${{ secrets.VT_USER }}@${{ secrets.VT_HOSTNAME }}:$PATH_SERVER
-
-      - name: Closing Notes
-        run: |
-          echo "GITHUB_BASE_REF:  $GITHUB_BASE_REF"
-          echo "GITHUB_HEAD_REF:  $GITHUB_HEAD_REF"
-          echo "GITHUB_REF:       $GITHUB_REF"
-          echo "GITHUB_REF_NAME:  $GITHUB_REF_NAME"
-          echo "GITHUB_RUN_ID:    $GITHUB_RUN_ID"
-          echo "GITHUB_SHA:       $GITHUB_SHA"
-          echo "COLOR:            $COLOR"
-          echo "NOW:              $(date +'%Y-%m-%d T%H:%M:%S %Z')"

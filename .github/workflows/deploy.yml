@@ -41,7 +41,7 @@ jobs:
         run: echo ${{ secrets.VT_KNOWN_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
-        run: rsync -avz -e "ssh -p ${{ secrets.VT_PORT }}" ${{ PATH_REPO }} ${{ secrets.VT_USER }}@${{ secrets.VT_HOSTNAME }}:${{ PATH_SERVER }}
+        run: rsync -avz -e "ssh -p ${{ secrets.VT_PORT }}" $PATH_REPO ${{ secrets.VT_USER }}@${{ secrets.VT_HOSTNAME }}:$PATH_SERVER
 
       - name: Closing Notes
         run: |

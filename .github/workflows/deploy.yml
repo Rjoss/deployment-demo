@@ -41,6 +41,4 @@ jobs:
         run: rsync --dry-run --verbose -avz -e "ssh -p ${{ secrets.PORT_HAKFGCOA }}" ./build/ ${{ secrets.USER_HAKFGCOA }}@${{ secrets.HOSTNAME_HAKFGCOA }}:/ci/
 
       - name: Closing Notes
-        run: |
-          echo Steps Finished
-          echo ///
+        run: echo Ran version 1.0
